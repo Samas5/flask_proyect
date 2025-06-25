@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario</title>
+  </head>
+  <body>
+    <h2>Vista del Formulario</h2>
+    <a href="{{ url_for('consulta' ) }}">Abrir vista Consulta</a>
+    <br /><br /><br />
+    <form action="{{ url_for('crear_album' ) }}" method="POST">
+      <input type="text" name="titulo" placeholder="Titulo" required />
+      <input type="text" name="artista" placeholder="Artista" required />
+      <input
+        type="number"
+        name="fecha"
+        placeholder="Año de publicación"
+        required
+      />
+      <br />
+      <button type="submit">Guardar album</button>
+    </form>
+    {% with mensajes = get_flashed_messages(with_categories=true) %} {% if
+    mensajes %} {% for categoria, mensaje in mensajes %}
+    <p>{{ mensaje }}</p>
+    {% endfor %} {% endif %} {% endwith %}
+    <br /><br /><br />
+    <table>
+      <thead>
+        <tr>
+          <th>id:</th>
+          <th>Album:</th>
+          <th>Artista:</th>
+          <th>Eliminar:</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for album in albums %}
+        <tr>
+          <td>{{ album.id }}</td>
+          <td>{{ album.titulo }}</td>
+          <td>{{ album.artista }}</td>
+          <td>
+            <a href="{{ url_for('eliminar_album', id=album.id ) }}">Eliminar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

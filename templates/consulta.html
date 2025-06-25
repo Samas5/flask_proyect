@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consulta</title>
+  </head>
+  <body>
+    <h2>Vista de Consulta</h2>
+    <a href="{{ url_for('home' ) }}">Abrir vista Formulario</a>
+    <br /><br /><br />
+    <table>
+      <thead>
+        <tr>
+          <th>Titulo</th>
+          <th>Artista</th>
+          <th>Fecha de lanzamiento</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for album in albums %}
+        <tr>
+          <td>{{ album.titulo }}</td>
+          <td>{{ album.artista }}</td>
+          <td>{{ album.fecha_lanzamiento }}</td>
+          <td>
+            <a href="{{ url_for('actualizar_album' id=album.id) }}"
+              >Actualizar</a
+            >
+          </td>
+          <td>
+            <a href="{{ url_for('eliminar_album', id=album.id) }}">Eliminar</a>
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
