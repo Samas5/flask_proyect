@@ -6,7 +6,7 @@
     <title>Consulta</title>
   </head>
   <body>
-    <h2>Vista de Consulta</h2>
+    <h2>Consulta de álbum</h2>
     <a href="{{ url_for('home' ) }}">Abrir vista Formulario</a>
     <br /><br /><br />
     <table>
@@ -19,22 +19,17 @@
         </tr>
       </thead>
       <tbody>
-        {% for album in albums %}
         <tr>
           <td>{{ album.titulo }}</td>
           <td>{{ album.artista }}</td>
           <td>{{ album.fecha_lanzamiento }}</td>
           <td>
-            <a href="{{ url_for('actualizar_album' id=album.id) }}"
-              >Actualizar</a
-            >
+            <a href="#">Actualizar</a>
           </td>
           <td>
-            <a href="{{ url_for('eliminar_album', id=album.id) }}">Eliminar</a>
+            <a href="#">Eliminar</a>
           </td>
         </tr>
-
-        {% endfor %}
       </tbody>
     </table>
   </body>

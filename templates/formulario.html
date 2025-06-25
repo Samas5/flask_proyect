@@ -32,7 +32,7 @@
           <th>id:</th>
           <th>Album:</th>
           <th>Artista:</th>
-          <th>Eliminar:</th>
+          <th>Detalles:</th>
         </tr>
       </thead>
       <tbody>
@@ -42,7 +42,7 @@
           <td>{{ album.titulo }}</td>
           <td>{{ album.artista }}</td>
           <td>
-            <a href="{{ url_for('eliminar_album', id=album.id ) }}">Eliminar</a>
+            <a href="{{ url_for('detalles', id=album.id) }}">Detalles</a>
           </td>
         </tr>
         {% endfor %}

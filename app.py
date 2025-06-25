@@ -76,6 +76,15 @@ def eliminar_album(id):
     except Exception as e:
         flash(f'Error: {e}')
         return redirect(url_for('home'))
+    
+@app.route('/detalles/<id>')
+def detalles(id):
+    try:
+        album = Album.query.get_or_404(id)
+        return render_template('consulta.html', album=album)
+    except Exception as e:
+        print(f'Error al consultar el album: {e}')
+        return render_template('consulta.html', album=[])
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
