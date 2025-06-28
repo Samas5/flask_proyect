@@ -76,7 +76,46 @@ def eliminar_album(id):
     except Exception as e:
         flash(f'Error: {e}')
         return redirect(url_for('home'))
-    
+
+@app.route('/actualizar-album/<int:id>', methods=['GET'])
+def actualizar_album(id):
+    album = Album.query.get_or_404(id)
+    return render_template('formularioUpdate.html', album=album)
+
+
+@app.route('/actualizar-album/<int:id>', methods=['POST'])
+def actualizar_album_post(id):
+    album = Album.query.get_or_404(id)
+    titulo = request.form.get('titulo', '').strip()
+    artista = request.form.get('artista', '').strip()
+    fecha_lanzamiento = request.form.get('fecha', '').strip()
+    errores = {}
+    if not titulo:
+        errores['titulo'] = 'Nombre del álbum obligatorio'
+    if not artista:
+        errores['artista'] = 'Nombre del artista obligatorio'
+    if not fecha_lanzamiento:
+        errores['fecha_lanzamiento'] = 'Año de lanzamiento obligatorio'
+    elif not fecha_lanzamiento.isdigit() or int(fecha_lanzamiento) < 1800 or int(fecha_lanzamiento) > 2030:
+        errores['fecha_lanzamiento'] = 'Ingresar una fecha de lanzamiento válida'
+    if not errores:
+        try:
+            album.titulo = titulo
+            album.artista = artista
+            album.fecha_lanzamiento = fecha_lanzamiento
+            db.session.commit()
+            flash('Álbum actualizado correctamente', 'ok')
+            return redirect(url_for('home'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al actualizar: {e}', 'error')
+            return redirect(url_for('home'))
+    else:
+        for campo, mensaje in errores.items():
+            flash(mensaje, 'error')
+        return redirect(url_for('actualizar_album', id=id))
+
+
 @app.route('/detalles/<id>')
 def detalles(id):
     try:

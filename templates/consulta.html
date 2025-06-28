@@ -7,14 +7,14 @@
   </head>
   <body>
     <h2>Consulta de álbum</h2>
-    <a href="{{ url_for('home' ) }}">Abrir vista Formulario</a>
-    <br /><br /><br />
+    <!-- <a href="{{ url_for('home' ) }}">Abrir vista Formulario</a> -->
     <table>
       <thead>
         <tr>
           <th>Titulo</th>
           <th>Artista</th>
           <th>Fecha de lanzamiento</th>
+          <th>Actualizar</th>
           <th>Eliminar</th>
         </tr>
       </thead>
@@ -24,13 +24,17 @@
           <td>{{ album.artista }}</td>
           <td>{{ album.fecha_lanzamiento }}</td>
           <td>
-            <a href="#">Actualizar</a>
+            <a href="{{ url_for('actualizar_album', id=album.id ) }}"
+              >Actualizar</a
+            >
           </td>
           <td>
-            <a href="#">Eliminar</a>
+            <a href="{{ url_for('eliminar_album', id=album.id ) }}">Eliminar</a>
           </td>
         </tr>
       </tbody>
     </table>
+    <br />
+    <a href="{{ url_for('home' ) }}">Regresar al formulario</a>
   </body>
 </html>
