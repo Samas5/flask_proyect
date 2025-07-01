@@ -53,17 +53,38 @@ def db_check():
 
 @app.route('/album', methods=['POST'])
 def crear_album():
-    album = Album(titulo=request.form.get('titulo', '').strip(), 
-                  artista=request.form.get('artista', '').strip(), 
-                  fecha_lanzamiento=request.form.get('fecha', '').strip())
-    try:
-        db.session.add(album)
-        db.session.commit()
-        flash('Álbum insertado correctamente', 'ok')
-        return redirect(url_for('home'))     
-    except Exception as e:
-        flash(f'Ocurrión un error {e}', 'error')
+    titulo = request.form.get('titulo', '').strip()
+    artista = request.form.get('artista', '').strip()
+    fecha_lanzamiento = request.form.get('fecha', '').strip()
+    errores = {}
+    if not titulo:
+        errores['titulo'] = 'Nombre del álbum obligatorio'
+    if not artista:
+        errores['artista'] = 'Nombre del artista obligatorio'
+    if not fecha_lanzamiento:
+        errores['fecha_lanzamiento'] = 'Año de lanzamiento obligatorio'
+    elif not fecha_lanzamiento.isdigit() or int(fecha_lanzamiento) < 1800 or int(fecha_lanzamiento) > 2030:
+        errores['fecha_lanzamiento'] = 'Ingresar una fecha de lanzamiento válida'
+    if not errores:
+        try:
+            album = Album(titulo=titulo, artista=artista, fecha_lanzamiento=fecha_lanzamiento)
+            db.session.add(album)
+            db.session.commit()
+            flash('Álbum insertado correctamente', 'ok')
+            return redirect(url_for('home'))     
+        except Exception as e:
+            flash(f'Ocurrión un error {e}', 'error')
+            return redirect(url_for('home'))
+    else:
+        for campo, mensaje in errores.items():
+            flash(mensaje, 'error')
         return redirect(url_for('home'))
+
+
+
+
+
+
 
 @app.route('/albums/<int:id>', methods=['GET'])
 def eliminar_album(id):
