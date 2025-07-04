@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for album in albums %}
+        {% for album in albums %} {% if album.estado %}
         <tr>
           <td>{{ album.id }}</td>
           <td>{{ album.titulo }}</td>
@@ -37,7 +37,7 @@
             <a href="{{ url_for('detalles', id=album.id) }}">Detalles</a>
           </td>
         </tr>
-        {% endfor %}
+        {% endif %} {% endfor %}
       </tbody>
     </table>
   </body>

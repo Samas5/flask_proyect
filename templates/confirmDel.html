@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eliminar álbum</title>
+  </head>
+  <body>
+    <h2>¿Seguro que eliminaras?</h2>
+    <a href="{{ url_for('home') }}">Regresar al Formulario</a>
+    <br /><br /><br />
+    <form action="{{ url_for('eliminar_album', id=album.id ) }}">
+      <input
+        type="text"
+        name="titulo"
+        placeholder="Titulo"
+        value="{{ album.titulo }}"
+        disabled
+      />
+      <input
+        type="text"
+        name="artista"
+        placeholder="Artista"
+        value="{{ album.artista }}"
+        disabled
+      />
+      <input
+        type="number"
+        name="fecha"
+        placeholder="Año de publicación"
+        value="{{ album.fecha_lanzamiento }}"
+        disabled
+      />
+      <br />
+      <button type="submit">Eliminar álbum</button>
+    </form>
+  </body>
+</html>

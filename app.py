@@ -18,6 +18,7 @@ class Album(db.Model):
     titulo = db.Column(db.String(50))
     artista = db.Column(db.String(50))
     fecha_lanzamiento = db.Column(db.String(10))
+    estado = db.Column(db.Boolean)
 
 @app.route('/')
 def home():
@@ -56,6 +57,7 @@ def crear_album():
     titulo = request.form.get('titulo', '').strip()
     artista = request.form.get('artista', '').strip()
     fecha_lanzamiento = request.form.get('fecha', '').strip()
+
     errores = {}
     if not titulo:
         errores['titulo'] = 'Nombre del álbum obligatorio'
@@ -67,7 +69,7 @@ def crear_album():
         errores['fecha_lanzamiento'] = 'Ingresar una fecha de lanzamiento válida'
     if not errores:
         try:
-            album = Album(titulo=titulo, artista=artista, fecha_lanzamiento=fecha_lanzamiento)
+            album = Album(titulo=titulo, artista=artista, fecha_lanzamiento=fecha_lanzamiento, estado=True)
             db.session.add(album)
             db.session.commit()
             flash('Álbum insertado correctamente', 'ok')
@@ -79,18 +81,18 @@ def crear_album():
         for campo, mensaje in errores.items():
             flash(mensaje, 'error')
         return redirect(url_for('home'))
-
-
-
-
-
+    
+@app.route('/confirmar-eliminacion/<int:id>')
+def confirmar_eliminar(id):
+    album = Album.query.get_or_404(id)
+    return render_template('confirmDel.html', album=album)
 
 
 @app.route('/albums/<int:id>', methods=['GET'])
 def eliminar_album(id):
     album = Album.query.get_or_404(id)
     try:
-        db.session.delete(album)
+        album.estado = False
         db.session.commit()
         flash('Album eliminado correctamente')
         return redirect(url_for('home'))
